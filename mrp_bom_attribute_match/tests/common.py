@@ -142,7 +142,7 @@ class TestMrpBomAttributeMatchBase(SavepointCase):
             cls.p3,
             [
                 dict(
-                    product_id=cls.p1.product_variant_ids[0],
+                    product_id=cls.product_sword.product_variant_ids[1],
                     product_qty=1,
                 ),
             ],
