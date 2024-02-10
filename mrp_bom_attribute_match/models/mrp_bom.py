@@ -209,7 +209,7 @@ class MrpBom(models.Model):
         def update_product_boms():
             products = self.env["product.product"].browse(product_ids)
             product_boms.update(
-                self._get_product2bom(
+                self._bom_find(
                     products,
                     bom_type="phantom",
                     picking_type=picking_type or self.picking_type_id,
