@@ -65,3 +65,5 @@ class ProductTemplate(models.Model):
         if bom_lines:
             return bom_lines.mapped("bom_id")
         return False
+
+    # FIXME: _compute_bom_price()...

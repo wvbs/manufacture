@@ -56,6 +56,13 @@ class TestMrpBomAttributeMatchBase(TransactionCase):
                 "route_ids": [Command.link(cls.route_manufacture.id)],
             }
         )
+        cls.p4 = cls.env["product.template"].create(
+            {
+                "name": "P4",
+                "type": "product",
+                "route_ids": [Command.link(cls.route_manufacture.id)],
+            }
+        )
         cls.product_9 = cls.env["product.product"].create(
             {
                 "name": "Paper",
@@ -170,3 +177,60 @@ class TestMrpBomAttributeMatchBase(TransactionCase):
                                 value = cls.env[field.comodel_name]
                         setattr(line_form, key, value)
         return form.save()
+
+    def _create_boms(self):
+        mrp_bom_form = Form(self.env["mrp.bom"])
+
+        category = self.env["uom.category"].search([])[0]
+
+        self.env["uom.uom"].create(
+            {
+                "name": "Bigger UoM of my category",
+                "factor_inv": 42,
+                "uom_type": "bigger",
+                "rounding": 0.5,
+                "category_id": category.id,
+            }
+        )
+        mrp_bom_form.bom_line_ids.product_uom_id = self.env["uom.uom"].search([])[0].id
+        mrp_bom_form.product_tmpl_id = self.product_sword
+        with mrp_bom_form.bom_line_ids.new() as line_form:
+            line_form.component_template_id = self.product_plastic
+            line_form.product_qty = 1
+        mrp_bom_form._values["product_uom_id"] = self.env["uom.uom"].search([])[0]
+        self.bom_id = mrp_bom_form.save()
+
+        mrp_bom_form = Form(self.env["mrp.bom"])
+        mrp_bom_form.product_tmpl_id = self.product_fin
+        with mrp_bom_form.bom_line_ids.new() as line_form:
+            line_form.product_id = self.product_plastic.product_variant_ids[0]
+            line_form.product_qty = 1
+        self.fin_bom_id = mrp_bom_form.save()
+
+        mrp_bom_form = Form(self.env["mrp.bom"])
+        mrp_bom_form.product_tmpl_id = self.product_surf
+        with mrp_bom_form.bom_line_ids.new() as line_form:
+            line_form.product_id = self.product_fin.product_variant_ids[0]
+            line_form.product_qty = 1
+        self.surf_bom_id = mrp_bom_form.save()
+
+        mrp_bom_form = Form(self.env["mrp.bom"])
+        mrp_bom_form.product_tmpl_id = self.p1
+        with mrp_bom_form.bom_line_ids.new() as line_form:
+            line_form.product_id = self.p2.product_variant_ids[0]
+            line_form.product_qty = 1
+        self.p1_bom_id = mrp_bom_form.save()
+
+        mrp_bom_form = Form(self.env["mrp.bom"])
+        mrp_bom_form.product_tmpl_id = self.p2
+        with mrp_bom_form.bom_line_ids.new() as line_form:
+            line_form.product_id = self.p3.product_variant_ids[0]
+            line_form.product_qty = 1
+        self.p2_bom_id = mrp_bom_form.save()
+
+        mrp_bom_form = Form(self.env["mrp.bom"])
+        mrp_bom_form.product_tmpl_id = self.p3
+        with mrp_bom_form.bom_line_ids.new() as line_form:
+            line_form.product_id = self.p4.product_variant_ids[0]
+            line_form.product_qty = 1
+        self.p3_bom_id = mrp_bom_form.save()

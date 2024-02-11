@@ -19,7 +19,7 @@ class TestMrpBomAttributeMatchNested(TestMrpBomAttributeMatchBase):
             ]
         )
 
-        top = self.env["product.template"].create(
+        self.top = self.env["product.template"].create(
             {
                 "name": "Top-Level",
                 "type": "product",
@@ -28,12 +28,12 @@ class TestMrpBomAttributeMatchNested(TestMrpBomAttributeMatchBase):
         self.env["product.template.attribute.line"].create(
             {
                 "attribute_id": attr1.id,
-                "product_tmpl_id": top.id,
+                "product_tmpl_id": self.top.id,
                 "value_ids": [(6, 0, a1vs.ids)],
             }
         )
 
-        sub = self.env["product.template"].create(
+        self.sub = self.env["product.template"].create(
             {
                 "name": "Sub-Level",
                 "type": "product",
@@ -42,7 +42,7 @@ class TestMrpBomAttributeMatchNested(TestMrpBomAttributeMatchBase):
         self.env["product.template.attribute.line"].create(
             {
                 "attribute_id": attr1.id,
-                "product_tmpl_id": sub.id,
+                "product_tmpl_id": self.sub.id,
                 "value_ids": [(6, 0, a1vs.ids)],
             }
         )
@@ -62,7 +62,7 @@ class TestMrpBomAttributeMatchNested(TestMrpBomAttributeMatchBase):
         )
 
         self.bom_sub = self._create_bom(
-            sub,
+            self.sub,
             [
                 dict(
                     component_template_id=subsub.id,
@@ -71,10 +71,10 @@ class TestMrpBomAttributeMatchNested(TestMrpBomAttributeMatchBase):
             ],
         )
         self.bom_top = self._create_bom(
-            top,
+            self.top,
             [
                 dict(
-                    component_template_id=sub.id,
+                    component_template_id=self.sub.id,
                     product_qty=1,
                 ),
             ],
@@ -85,3 +85,7 @@ class TestMrpBomAttributeMatchNested(TestMrpBomAttributeMatchBase):
 
         BomStructureReport._get_report_data(self.bom_sub.id)
         BomStructureReport._get_report_data(self.bom_top.id)
+
+    def test_bom_price_compute(self):
+        self.top.product_variant_ids[0]._compute_bom_price(self.bom_top)
+        self.sub.product_variant_ids[0]._compute_bom_price(self.bom_sub)
