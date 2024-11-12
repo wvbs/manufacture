@@ -50,6 +50,7 @@ addon | version | maintainers | summary
 [mrp_subcontracting_skip_no_negative](mrp_subcontracting_skip_no_negative/) | 16.0.1.0.2 |  | MRP Subcontracting Skip No Negative
 [mrp_tag](mrp_tag/) | 16.0.1.1.0 |  | Allows to add multiple tags to Manufacturing Orders
 [mrp_unbuild_move_link](mrp_unbuild_move_link/) | 16.0.1.0.1 |  | Link the stock moves of manufacturing orders to the respective unbuild orders
+[mrp_unbuild_subcontracting](mrp_unbuild_subcontracting/) | 16.0.1.0.0 |  | Unbuild orders are created automatically when is returned a product subcontracted
 [mrp_unbuild_valuation_layer_link](mrp_unbuild_valuation_layer_link/) | 16.0.1.0.1 |  | Unbuild orders display the connected valuation layers
 [mrp_warehouse_calendar](mrp_warehouse_calendar/) | 16.0.1.0.0 | [![JordiBForgeFlow](https://github.com/JordiBForgeFlow.png?size=30px)](https://github.com/JordiBForgeFlow) | Considers the warehouse calendars in manufacturing
 [mrp_workcenter_cost](mrp_workcenter_cost/) | 16.0.1.0.0 | [![ivantodorovich](https://github.com/ivantodorovich.png?size=30px)](https://github.com/ivantodorovich) [![sebalix](https://github.com/sebalix.png?size=30px)](https://github.com/sebalix) | Controls how to compute the workcenter cost (effective vs theoretical)
