@@ -89,7 +89,7 @@ class TestMrpProductionAutovalidate(common.TransactionCase):
         self.assertEqual(self.mo_1.workorder_ids.state, "ready")
         self.mo_1.action_return_to_draft()
         self.assertEqual(self.mo_1.state, "draft")
-        self.assertEqual(self.mo_1.workorder_ids.state, "waiting")
+        self.assertEqual(self.mo_1.workorder_ids.state, "ready")
         self.mo_1._compute_move_raw_ids()
         self.mo_1.action_confirm()
         self.assertEqual(self.mo_1.state, "confirmed")
@@ -103,6 +103,6 @@ class TestMrpProductionAutovalidate(common.TransactionCase):
         self.mo_1._compute_move_raw_ids()
         self.mo_1.action_confirm()
         self.mo_1.qty_producing = 2
-        self.mo_1.workorder_ids.action_mark_as_done()
+        self.mo_1.workorder_ids.button_finish()
         with self.assertRaises(UserError):
             self.mo_1.action_return_to_draft()
